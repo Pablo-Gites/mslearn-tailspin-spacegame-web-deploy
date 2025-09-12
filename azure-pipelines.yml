@@ -13,17 +13,17 @@ stages:
     pool:
       name: Default
 
-variables:
-  wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
-  dotnetSdkVersion: '8.x'
+  variables:
+    wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
+    dotnetSdkVersion: '8.x'
 
-steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET SDK $(dotnetSdkVersion)'
-  inputs:
-    version: '$(dotnetSdkVersion)'
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET SDK $(dotnetSdkVersion)'
+    inputs:
+      version: '$(dotnetSdkVersion)'
 
-- task: NuGetToolInstaller@0
+  - task: NuGetToolInstaller@0
   inputs:
     versionSpec: '5.9.1'
 
