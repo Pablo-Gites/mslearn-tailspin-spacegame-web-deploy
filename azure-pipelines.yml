@@ -5,7 +5,7 @@ resources:
   repositories:
   - repository: Templates
     type: github
-    name: PawelCO/Templates
+    name: Pablo-Gites/Templates
     ref: refs/heads/main
     endpoint: github.com_Pablo-Gites
 
