@@ -6,8 +6,8 @@ resources:
   - repository: Templates
     type: github
     name: PawelCO/Templates
-    #ref: refs/heads/main
-    endpoint: GitHub connection 1
+    ref: refs/heads/main
+    endpoint: github.com_Pablo-Gites
 
 - template: Variables.yml@Templates
 
