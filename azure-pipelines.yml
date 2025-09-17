@@ -1,6 +1,16 @@
 trigger:
 - '*'
 
+resources:
+  repositories:
+  - repository: Templates
+    type: github
+    name: PawelCO/Templates
+    #ref: refs/heads/main
+    endpoint: GitHub connection 1
+
+- template: Variables.yml@Template
+
 variables:
   buildConfiguration: 'Release'
 
@@ -11,13 +21,11 @@ stages:
   - job: 'Build'
     displayName: 'Build job'
     pool:
-      vmImage: 'ubuntu-20.04'
-      demands:
-      - npm
+      name: Default
 
     variables:
       wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
-      dotnetSdkVersion: '5.x'
+      dotnetSdkVersion: '8.x'
 
     steps:
     - task: UseDotNet@2
@@ -25,16 +33,19 @@ stages:
       inputs:
         version: '$(dotnetSdkVersion)'
 
-    - task: Npm@1
-      displayName: 'Run npm install'
+    - task: Cache@2
       inputs:
-        verbose: false
+        key: 'npm | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+          npm | "$(Agent.OS)"
+        path: $(Build.SourcesDirectory)/node_modules
+      displayName: 'Cache node_modules'
 
-    - script: './node_modules/.bin/node-sass $(wwwrootDir) --output $(wwwrootDir)'
-      displayName: 'Compile Sass assets'
+    - script: npm ci
+      displayName: 'Install Dependencies'
 
-    - task: gulp@1
-      displayName: 'Run gulp tasks'
+    - script: npx gulp proj:publish
+      displayName: 'Run Full Gulp Publish Task'
 
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
       displayName: 'Write build info'
@@ -71,7 +82,7 @@ stages:
   jobs:
   - deployment: Deploy
     pool:
-      vmImage: 'ubuntu-20.04'
+      name: Default
     environment: dev
     variables:
     - group: Release
@@ -94,7 +105,7 @@ stages:
   jobs:
   - deployment: Deploy
     pool:
-      vmImage: 'ubuntu-20.04'
+      name: Default
     environment: test
     variables:
     - group: 'Release'
@@ -117,7 +128,7 @@ stages:
   jobs:
   - deployment: Deploy
     pool:
-      vmImage: 'ubuntu-20.04'
+      name: Default
     environment: staging
     variables:
     - group: 'Release'
@@ -133,3 +144,27 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+  - job: RunLoadTests
+    dependsOn: Deploy
+    displayName: 'Run load tests'
+    pool:
+      name: 'Azure Pipelines'
+      vmImage: 'ubuntu-20.04'
+    variables:
+    - group: Release
+    steps:
+    - script: |
+        wget -c archive.apache.org/dist/jmeter/binaries/apache-jmeter-$(jmeterVersion).tgz
+        tar -xzf apache-jmeter-$(jmeterVersion).tgz
+      displayName: 'Install Apache JMeter'
+    - script: apache-jmeter-$(jmeterVersion)/bin/./jmeter -n -t LoadTest.jmx -o Results.xml -Jhostname=$(STAGING_HOSTNAME)
+      displayName: 'Run Load tests'
+    - script: |
+        sudo apt-get update
+        sudo apt-get install xsltproc
+        xsltproc JMeter2JUnit.xsl Results.xml > JUnit.xml
+      displayName: 'Transform JMeter output to JUnit'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: JUnit
+        testResultsFiles: JUnit.xml
