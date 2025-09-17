@@ -1,6 +1,16 @@
 trigger:
 - '*'
 
+resources:
+  repositories:
+  - repository: Templates
+    type: github
+    name: PawelCO/Templates
+    #ref: refs/heads/main
+    endpoint: GitHub connection 1
+
+- template: Variables.yml@Template
+
 variables:
   buildConfiguration: 'Release'
   dotnetSdkVersion: '8.x'
