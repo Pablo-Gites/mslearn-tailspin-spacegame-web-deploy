@@ -9,7 +9,7 @@ resources:
     #ref: refs/heads/main
     endpoint: GitHub connection 1
 
-- template: Variables.yml@Template
+- template: Variables.yml@Templates
 
 variables:
   buildConfiguration: 'Release'
