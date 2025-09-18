@@ -1,6 +1,7 @@
 trigger:
 - '*'
 
+jobs:
 - job: TestHostedAgent
   pool:
     name: 'Azure Pipelines'
