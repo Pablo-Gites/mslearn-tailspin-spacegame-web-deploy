@@ -87,7 +87,7 @@ stages:
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              appName: 'webapp-spacegame-web-dev-1'
+              appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
 - stage: 'Test'
@@ -139,7 +139,7 @@ stages:
     dependsOn: Deploy
     displayName: 'Run load tests'
     pool:
-      name: 'Azure Pipelines'
+      name: Azure Pipelines
       vmImage: 'ubuntu-20.04'
     variables:
     - group: Release
