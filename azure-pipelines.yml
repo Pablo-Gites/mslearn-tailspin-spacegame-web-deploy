@@ -12,7 +12,7 @@ resources:
 variables:
   buildConfiguration: 'Release'
   dotnetSdkVersion: '8.x'
-  template: Variables.yml@Templates
+  -template: Variables.yml@Templates
 
 stages:
 - stage: 'Build'
