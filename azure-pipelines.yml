@@ -9,7 +9,7 @@ resources:
     ref: refs/heads/main
     endpoint: github.com_Pablo-Gites
 
-#- template: Variables.yml@Templates
+- template: Variables.yml@Templates
 
 variables:
   buildConfiguration: 'Release'
