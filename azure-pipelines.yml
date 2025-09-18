@@ -84,7 +84,7 @@ stages:
     environment: dev
     variables:
     #- group: Release
-      template: Variables.yml@Templates
+    - template: Variables.yml@Templates
     strategy:
       runOnce:
         deploy:
