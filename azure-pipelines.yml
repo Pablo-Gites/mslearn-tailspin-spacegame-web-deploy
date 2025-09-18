@@ -139,7 +139,7 @@ stages:
     dependsOn: Deploy
     displayName: 'Run load tests'
     pool:
-      name: Azure Pipelines
+      #name: Azure Pipelines
       vmImage: 'ubuntu-20.04'
     variables:
     - group: Release
