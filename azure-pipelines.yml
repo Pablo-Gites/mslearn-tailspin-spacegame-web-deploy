@@ -119,7 +119,7 @@ stages:
   jobs:
   - deployment: Deploy
     pool:
-      name: Default
+      vmImage: 'ubuntu-20.04'
     environment: staging
     variables:
     - group: 'Release'
