@@ -85,7 +85,8 @@ stages:
       name: Default
     environment: dev
     variables:
-    - group: Release
+    #- group: Release
+    template: Variables.yml@Templates
     strategy:
       runOnce:
         deploy:
@@ -108,7 +109,8 @@ stages:
       name: Default
     environment: test
     variables:
-    - group: 'Release'
+    #- group: 'Release'
+    template: Variables.yml@Templates
     strategy:
       runOnce:
         deploy:
@@ -131,7 +133,8 @@ stages:
       name: Default
     environment: staging
     variables:
-    - group: 'Release'
+    #- group: 'Release'
+    template: Variables.yml@Templates
     strategy:
       runOnce:
         deploy:
@@ -151,7 +154,8 @@ stages:
       name: 'Azure Pipelines'
       vmImage: 'ubuntu-20.04'
     variables:
-    - group: Release
+    #- group: Release
+    template: Variables.yml@Templates
     steps:
     - script: |
         wget -c archive.apache.org/dist/jmeter/binaries/apache-jmeter-$(jmeterVersion).tgz
