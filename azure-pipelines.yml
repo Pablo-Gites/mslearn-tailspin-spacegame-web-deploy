@@ -4,8 +4,6 @@ trigger:
 jobs:
 - job: TestHostedAgent
   pool:
-    name: 'Azure Pipelines'
-    demands:
-      - ImageVersion -equals ubuntu-20.04
+    vmImage: 'ubuntu-20.04'
   steps:
     - script: echo "Running on Microsoft-hosted Ubuntu agent"
