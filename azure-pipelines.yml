@@ -1,16 +1,9 @@
 trigger:
 - '*'
 
-resources:
-  repositories:
-  - repository: Templates
-    type: github
-    name: Pablo-Gites/Templates
-    ref: refs/heads/main
-    endpoint: github.com_Pablo-Gites
-
 variables:
-- template: Variables.yml@Templates
+  buildConfiguration: 'Release'
+  dotnetSdkVersion: '8.x'
 
 stages:
 - stage: 'Build'
@@ -85,16 +78,13 @@ stages:
       name: Default
     environment: dev
     variables:
-    #- group: Release
-    - template: Variables.yml@Templates
+    - group: Release
     strategy:
       runOnce:
         deploy:
           steps:
           - download: current
             artifact: drop
-          - script: echo "WebAppNameDev is $(WebAppNameDev)"
-            displayName: 'Debug variable'
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
@@ -111,8 +101,7 @@ stages:
       name: Default
     environment: test
     variables:
-    #- group: 'Release'
-      template: Variables.yml@Templates
+    - group: 'Release'
     strategy:
       runOnce:
         deploy:
@@ -135,8 +124,7 @@ stages:
       name: Default
     environment: staging
     variables:
-    #- group: 'Release'
-      template: Variables.yml@Templates
+    - group: 'Release'
     strategy:
       runOnce:
         deploy:
@@ -156,8 +144,7 @@ stages:
       name: 'Azure Pipelines'
       vmImage: 'ubuntu-20.04'
     variables:
-    #- group: Release
-      template: Variables.yml@Templates
+    - group: Release
     steps:
     - script: |
         wget -c archive.apache.org/dist/jmeter/binaries/apache-jmeter-$(jmeterVersion).tgz
