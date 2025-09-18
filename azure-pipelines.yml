@@ -91,6 +91,8 @@ stages:
           steps:
           - download: current
             artifact: drop
+          - script: echo "WebAppNameDev is $(WebAppNameDev)"
+            displayName: 'Debug variable'
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
