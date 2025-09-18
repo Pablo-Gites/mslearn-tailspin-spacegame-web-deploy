@@ -86,7 +86,7 @@ stages:
     environment: dev
     variables:
     #- group: Release
-    template: Variables.yml@Templates
+      template: Variables.yml@Templates
     strategy:
       runOnce:
         deploy:
@@ -110,7 +110,7 @@ stages:
     environment: test
     variables:
     #- group: 'Release'
-    template: Variables.yml@Templates
+      template: Variables.yml@Templates
     strategy:
       runOnce:
         deploy:
@@ -134,7 +134,7 @@ stages:
     environment: staging
     variables:
     #- group: 'Release'
-    template: Variables.yml@Templates
+      template: Variables.yml@Templates
     strategy:
       runOnce:
         deploy:
@@ -155,7 +155,7 @@ stages:
       vmImage: 'ubuntu-20.04'
     variables:
     #- group: Release
-    template: Variables.yml@Templates
+      template: Variables.yml@Templates
     steps:
     - script: |
         wget -c archive.apache.org/dist/jmeter/binaries/apache-jmeter-$(jmeterVersion).tgz
