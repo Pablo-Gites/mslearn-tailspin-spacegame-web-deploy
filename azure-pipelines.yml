@@ -36,6 +36,9 @@ stages:
     - script: npm ci
       displayName: 'Install Dependencies'
 
+    - script: npx gulp proj:publish
+      displayName: 'Run Full Gulp Publish Task'
+
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
       displayName: 'Write build info'
       workingDirectory: $(wwwrootDir)
