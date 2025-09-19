@@ -143,7 +143,7 @@ stages:
             displayName: 'Swap deployment slots'
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              resourceGroupName: 'tailspin-space-game-rg'
+              resourceGroupName: 'RG-AppSvc-WE'
               webAppName: '$(WebAppNameStaging)'
               sourceSlot: 'swap'
               targetSlot: 'production'
